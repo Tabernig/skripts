@@ -3,7 +3,7 @@ import os
 import sys
 import numpy as np
 
-os.chdir("D:/_Programmieren/repos/Tabernig.github.io/VU_Automatisierung")
+os.chdir("D:/_Programmieren/repos/skript/VU_Automatisierung") ####UPDATE
 
 fobj = open("./Daten/testcoordinates.txt","r")
 myfile = []
