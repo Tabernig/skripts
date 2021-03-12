@@ -2,7 +2,6 @@
 
 ### VU Automatisierung 
 **necessary imports**
-
 ```python
 import sys
 import numpy 
