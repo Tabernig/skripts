@@ -1,7 +1,7 @@
 # Skripts
 
 ### VU Automatisierung 
-**necessary imports**
+**Necessary imports**
 ```python
 import sys
 import numpy 
@@ -21,17 +21,12 @@ from pclpy import pcl
 ### Sonstige Tools
 * [Convert Polar Coordinates](https://github.com/Tabernig/skripts/blob/master/Tools/convertpolartocoordinates.py)
 * [Convert multiline text to oneline (usefull for text extracted form PDFs)](https://github.com/Tabernig/skripts/blob/master/Tools/multi2oneLineText.py)
-* [Seitenlaenge aus Flaeche und Umfang eines Rechtecks](https://github.com/Tabernig/skripts/blob/master/Tools/skriptLundB.py)
+* [Side length from area and perimeter of a rectangle](https://github.com/Tabernig/skripts/blob/master/Tools/skriptLundB.py)
 
 
-*kursiv*
+*placeholder*
 
 
-
-1. numeriert
-2. numeriert
-3. numeriert
-
-
-
-Quellcode highlighting:
+1. placeholder
+2. placeholder
+3. placeholder
