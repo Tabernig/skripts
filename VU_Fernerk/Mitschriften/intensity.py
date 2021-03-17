@@ -62,4 +62,4 @@ print("Done")
 #Standard Input
 #D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointcloud1_small.txt
 #D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointcloud1_small_corrected.txt
-#python intensity.py -infile D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointcloud1_small.txt -outfile D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointcloud1_small_corrected.txt
+#python D:\_Programmieren\repos\skripts\VU_Fernerk\Mitschriften\intensity.py -infile D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointcloud1_small.txt -outfile D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointcloud1_small_corrected.txt -delimiter \t -colno 4 -threshold 255
