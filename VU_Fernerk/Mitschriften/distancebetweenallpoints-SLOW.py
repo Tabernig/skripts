@@ -1,17 +1,14 @@
 #kdtree_distance.py
 
-#Calculates nearest neighbour for each point
-
-
 #Datapath: D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointcloud1_small.txt
-#python D:\_Programmieren\repos\skripts\VU_Fernerk\Mitschriften\kdtree_distance.py -infile D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointcloud1_small.txt -outfile D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointsDis.txt -x 0 -y 1 -z 2 -delimiter \t -searchradius 1.0
+#python D:\_Programmieren\repos\skripts\VU_Fernerk\Mitschriften\distancebetweenallpoints-SLOW.py -infile D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointcloud1_small.txt -outfile D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointsDis.txt -x 0 -y 1 -z 2 -delimiter \t -searchradius 1.0
 
 
 #MODULE
 import argparse
 import re
 import numpy as np
-from scipy import spatial
+import math
 
 #PARSER
 parser = argparse.ArgumentParser(description="this skript calculates the distance between two nearest points")
@@ -39,28 +36,39 @@ fobj = open(args.infile,"r")
 fobj_Out = open(args.outfile,"w")
 
 
+count = 1
+limit =1000
 coordlist = []
 for line in fobj:
-    line = line.strip()
-    getrennte_Line = re.split(args.delimiter,line)
-    x= float(getrennte_Line[args.x])
-    y= float(getrennte_Line[args.y])
-    z= float(getrennte_Line[args.z])
+    if count<limit:
+        line = line.strip()
+        getrennte_Line = re.split(args.delimiter,line)
+        x= float(getrennte_Line[args.x])
+        y= float(getrennte_Line[args.y])
+        z= float(getrennte_Line[args.z])
 
-    coordlist.append([x,y,z])
+        coordlist.append([count,x,y,z])
+        count+=1
+
+eleCount = 0
+for xyz in coordlist:
+    x1, y1, z1= xyz[1],xyz[2],xyz[3]
+    for elements in coordlist:
+        x2,y2,z2=elements[1],elements[2],elements[3]
+        if x1==x2 and y1==y2 and z1 == z2:
+            pass
+        else: 
+            dist = math.sqrt((x1-x2)**2+(y1-y2)**2+(z1-z2)**2)
+            #print("Distanz zwischen Punkt "+str(xyz[0])+"und Punkt "+str(elements[0])+"is: "+str(dist))
+            
+        eleCount += 1
+        # if eleCount%100 == 0:
+        #     print(str(eleCount/100))
+
+#print(eleCount)
 pts3D = np.array(coordlist)
-tree3d = spatial.cKDTree(pts3D)
 
-pointndNeighbour = []
-for point in pts3D:
-    searchpt = point
-    indexlist = tree3d.query_ball_point(searchpt,5)
-    nearestpoint = pts3D[indexlist[0]]
-    pointndNeighbour.append([point,nearestpoint])
-
-neighbourArray = np.array(pointndNeighbour)
-
-print(neighbourArray)
+print(pts3D)
 #Fileobjekte schließen
 fobj.close()
 fobj_Out.close()
