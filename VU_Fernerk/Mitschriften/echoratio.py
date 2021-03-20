@@ -74,16 +74,18 @@ for searchpt in pts3D:
     a= np.append(a,[echoratio])
     echoAr[index] = a
     a = a.tolist()
-    outstring = ",".join(getrennte_Line) #Umwandlung der Liste in einen String
-    outstring = outstring +"\n"
-    # for value in a:
-    fobj_Out.write(str(a)) #Datei schreiben
-print(a,type(a))
+    l = len(a)
+    c = 1
+    for value in a:
+        if c<l:
+            fobj_Out.write(str(value)+";") #Datei schreiben
+            c+=1
+        else:
+            fobj_Out.write(str(value)+"\n") #Datei schreiben
+    index += 1
 
 
-    
-
-
+#print(a,c,len(a))
 
 
 #print(echoAr)
