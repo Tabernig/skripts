@@ -94,6 +94,9 @@ print(neighbourArray)
 print("min",str(mindist))
 print("max",str(maxdist))
 
+
+
+
 #Fileobjekte schließen
 fobj.close()
 fobj_Out.close()

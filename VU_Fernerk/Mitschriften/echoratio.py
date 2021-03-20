@@ -4,7 +4,7 @@
 
 
 #Datapath: D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointcloud1_small.txt
-#python D:\_Programmieren\repos\skripts\VU_Fernerk\Mitschriften\echoratio.py -infile D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointcloud1_small.txt -outfile D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointsDis.txt -x 0 -y 1 -z 2 -delimiter \t -searchradius 1.0
+#python D:\_Programmieren\repos\skripts\VU_Fernerk\Mitschriften\echoratio.py -infile D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointcloud1_small.txt -outfile D:\_Programmieren\VU_Automatisierung_Daten\Daten\echoratio.txt -x 0 -y 1 -z 2 -delimiter \t -searchradius 1.0
 
 
 #MODULE
@@ -41,58 +41,53 @@ fobj_Out = open(args.outfile,"w")
 
 
 coordlist = []
+coord2d = []
+echoAr = []
 for line in fobj:
     line = line.strip()
     getrennte_Line = re.split(args.delimiter,line)
     x= float(getrennte_Line[args.x])
     y= float(getrennte_Line[args.y])
     z= float(getrennte_Line[args.z])
-
     coordlist.append([x,y,z])
+    coord2d.append([x,y])
+    echoAr.append([x,y,z,0])
 pts3D = np.array(coordlist)
+pts2D = np.array(coord2d)
+echoAr = np.array(echoAr)
 tree3d = spatial.cKDTree(pts3D)
+tree2d = spatial.cKDTree(pts2D)
 
-mindist = 99999
-maxdist = 0
-neigandis = []
-for point in pts3D:
-    searchpt = point
-    #indexlist = tree3d.query_ball_point(searchpt,args.searchradius)
-    while True:
-        dd,ii = tree3d.query(point,k=3)
-        distances = dd.tolist()
-        distanceR = []
-        xt = 0
-        for value in distances:
-            if (float(value) > 0) and (float(value) <= args.searchradius):
-                distanceR.append(value)
-                break
-            xt += 1
-        break
-    if len(ii) <= xt:
-        nearestpoint = -99999
-    else:
-        #print(ii,len(ii),xt)
-        nearestpoint = pts3D[ii[xt]]
-        if distanceR[0] > maxdist:
-            maxdist = distanceR[0]
-        if distanceR[0] < mindist:
-            mindist = distanceR[0]
+index = 0
+nr2d=[]
+
+for searchpt in pts2D:
+    indexlist = tree2d.query_ball_point(searchpt,args.searchradius)
+    nr2d.append(len(indexlist))
+
+
+for searchpt in pts3D:
+    indexlist = tree3d.query_ball_point(searchpt,args.searchradius)
+    nr3d = len(indexlist)
+    a = searchpt
+    echoratio = nr3d/nr2d[index]*100
+    a= np.append(a,[echoratio])
+    echoAr[index] = a
+    a = a.tolist()
+    outstring = ",".join(getrennte_Line) #Umwandlung der Liste in einen String
+    outstring = outstring +"\n"
+    # for value in a:
+    fobj_Out.write(str(a)) #Datei schreiben
+print(a,type(a))
+
+
     
-    point=point.tolist()
-    if type(nearestpoint) == int:
-         nearestpoint=[nearestpoint]
-    else:
-        nearestpoint=nearestpoint.tolist()
-    neigandis.append(point)
-    neigandis.append(nearestpoint)
-    neigandis.append(distanceR)
 
-print(point,type(point), nearestpoint,type(nearestpoint) ,distanceR,type(distanceR))
-neighbourArray = np.array(neigandis)
-print(neighbourArray)
-print("min",str(mindist))
-print("max",str(maxdist))
+
+
+
+#print(echoAr)
+#3d Distanze 
 
 #Fileobjekte schließen
 fobj.close()
