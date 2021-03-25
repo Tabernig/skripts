@@ -1,9 +1,8 @@
-import numpy as np
+import bpy
+import os 
 
+#cd C:\Program Files\Blender Foundation\Blender 2.92
 
-A= [952, 60746, 35864],[1,2,3]
-a = np.array(A)
-print(a)
-
-a= np.append(a,[1])
-print(a)
+os.chdir("C:\Program Files\Blender Foundation\Blender 2.92")
+open("blender.exe")
+print("Done")

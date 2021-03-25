@@ -1,4 +1,5 @@
-#echoratio.py
+#kdtree
+
 
 #Calculates nearest neighbour for each point
 

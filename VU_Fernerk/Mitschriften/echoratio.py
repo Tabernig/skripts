@@ -76,12 +76,14 @@ for searchpt in pts3D:
     a = a.tolist()
     l = len(a)
     c = 1
-    for value in a:
-        if c<l:
-            fobj_Out.write(str(value)+";") #Datei schreiben
-            c+=1
-        else:
-            fobj_Out.write(str(value)+"\n") #Datei schreiben
+    if a[-1] > 90: #Temporär um Ebenen zu filtern
+        for value in a:
+            if c<l:
+                fobj_Out.write(str(value)+";") #Datei schreiben
+                c+=1
+            else:
+                fobj_Out.write(str(value)+"\n") #Datei schreiben
+
     index += 1
 
 

@@ -10,6 +10,10 @@ import numpy as np
 # FUNCTIONS
 # functions for covariance matrix, eigenvalue, eigenvector calculation
 # (c) Magnus Bremer 2019
+#Datapath: D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointcloud1_small.txt
+#python D:\_Programmieren\repos\skripts\VU_Fernerk\Mitschriften\uebung6_eigenfeatures_template.py -infile D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointcloud1_smaller.txt -outfile D:\_Programmieren\VU_Automatisierung_Daten\Daten\eigenFeat.txt -x 0 -y 1 -z 2 -delimiter \t -searchrad 1.0
+
+
 
 def getCovarianceMatrix(PointArray):
     F_mean = np.mean(PointArray,axis=0)
@@ -46,7 +50,7 @@ def GetEigenInfos(CovMat):
 	evecS = np.array(eigenvectors[:,2].T)
 	return eL,eI,eS,evecL[0],evecI[0],evecS[0] #modified
 
-# PARSER
+#PARSER
 
 #definition
 parser = argparse.ArgumentParser(description='this script calculates 3 eigen features using KD-tree.')
@@ -79,7 +83,7 @@ fobj  = open(args.infile, "r") # open infile for reading
 fobj_out = open(args.outfile, "w") # open outfile for writing
 
 coordlist3d=[]
-coordlist2d=[]
+
 for line in fobj:
     line = line.strip() # remove newline symbol
     getrennte_linie = re.split(args.delimiter, line)
@@ -108,8 +112,20 @@ for point in pts3d:
         neighborpoint = pts3d[i]
         neighborcoords.append(neighborpoint)
     
-    #ADD HERE CODE FOR EIGENFEATURES CALCULATION
     
+    #ADD HERE CODE FOR EIGENFEATURES CALCULATION
+    covMatrix = getCovarianceMatrix(np.array(neighborcoords))
+    eigenPara = GetEigenInfos(covMatrix)
+    eiL = eigenPara[0]
+    eiI = eigenPara[1]
+    eiS = eigenPara [2]
+    evecL = eigenPara[3]
+    evecI = eigenPara[4]
+    evecS = eigenPara[5]
+    
+    linearity = (eiL - eiI)/eiL
+    planarity = (eiI-eiS)/eiL
+    sphericity = eiS/eiL
 
     # Umwandlung der Liste in einen String
     searchpt = searchpt3d.astype(str) #cast array as string, with nice floating point formatting
