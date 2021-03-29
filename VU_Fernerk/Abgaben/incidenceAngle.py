@@ -1,7 +1,7 @@
 # uebung6_eigenfeatures.py using scipy.spatial and own fuctions for covariance matrix
 #Datapath: D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointcloud1_small.txt
 #activate rs
-#python D:\_Programmieren\repos\skripts\VU_Fernerk\Abgaben\slope.py -infile D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointcloud1_smaller.txt -outfile D:\_Programmieren\VU_Automatisierung_Daten\Daten\slope.txt -x 0 -y 1 -z 2 -delimiter \t -searchrad 1.0
+#python D:\_Programmieren\repos\skripts\VU_Fernerk\Abgaben\incidenceAngle.py -infile D:\_Programmieren\VU_Automatisierung_Daten\Daten\pointcloud1_smaller.txt -outfile D:\_Programmieren\VU_Automatisierung_Daten\Daten\shade.txt -x 0 -y 1 -z 2 -delimiter \t -searchrad 1.0
 
 # MODULS
 import argparse
@@ -132,11 +132,10 @@ for point in pts3d:
 
     #ADD here code for slope calcluation
     #Idea: Angle between lower eiS and eiS, with the second vektor having set the z value to zero.
-
-    eiSSpur = np.array([evecS[0],evecS[1],0])
-
-    inner = np.inner(evecS,eiSSpur)
-    norms = LA.norm(evecS)*LA.norm(eiSSpur)
+    sunvec = np.array([0.0,-0.7,0.7])
+    
+    inner = np.inner(evecS,sunvec)
+    norms = LA.norm(evecS)*LA.norm(sunvec)
     
     cos = inner/norms
     rad = np.arccos(np.clip(cos,-1.0,1.0))
@@ -147,14 +146,14 @@ for point in pts3d:
     
     # Umwandlung der Liste in einen String
     searchpt = searchpt3d.astype(str) #cast array as string, with nice floating point formatting
-    outstring = '%s,%s,%s,%.2f,%.2f,%.2f' % (searchpt3d[0],searchpt3d[1],searchpt3d[2],cos,rad,deg)
+    outstring = '%s,%s,%s,%.2f,%.2f,%.2f' % (searchpt3d[0],searchpt3d[1],searchpt3d[2],cos,rad,abs(deg-90))
     
     # Datei schreiben
     myline = outstring+"\n"
     fobj_out.write(myline)
     
     #Optional, in order to check 
-    # print(evecS,eiSSpur,inner,norms,cos,rad,deg)
+    # print(evecS,sunvec,inner,norms,cos,rad,deg-90)
     # c+= 1
     # if c == 10:
     #     break
