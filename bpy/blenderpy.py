@@ -37,7 +37,7 @@ def createGrid(Gridname,VerticesAsTuplesInList):
 #Files:
 #D:\_Programmieren\VU_Automatisierung_Daten\Daten\echoratio
 begin = time.time()
-echoratio = open("D:/_Programmieren/VU_Automatisierung_Daten/Daten/pointcloud1_small.txt")
+echoratio = open("D:/_Programmieren/VU_Automatisierung_Daten/Daten/echoratio.txt")
 
 ###########generates Cubes at each point. Slow at large point numbers #################
 #coordlist = []
@@ -72,7 +72,7 @@ listofz = []
 counter = 0
 for line in echoratio:
     line = line.strip()
-    getrennte_Line = re.split("\t",line)
+    getrennte_Line = re.split(";",line)
     x = float(getrennte_Line[0])
     y = float(getrennte_Line[1])
     z = float(getrennte_Line[2])
