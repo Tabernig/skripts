@@ -1,6 +1,6 @@
 import bpy
 import random
-import math
+
 ######################## FUNCTIONS ############################
 def select(objName, additive=False):
     # By default, clear other selections
@@ -15,12 +15,9 @@ def myActivator(objName):
 
 ################### INPUT VALUES ################
 #side a and b
-locationcount = 8
-width = 6
+locationcount = 10
+width = 10
 ballcount = 13
-deg = 45
-
-
 
 #Objectparameter
 objectLength = 1
@@ -38,18 +35,6 @@ bigger = max([locationcount,width])
 distance = objectLength + 2*objectWidth
 sizePlane = bigger*distance 
 
-
-#For the rotation and movement of Objects:
-rad = deg*math.pi/180
-negYmov = 1 - math.cos(deg)
-#print(negYmov,math.cos(deg))
-posZmov = math.sin(deg)
-absYmov = -locationcount*distance/2*(negYmov)
-absZmov = locationcount*distance/2*posZmov
-
-print(absYmov,absZmov)
-
-######################### Build Objects ###########################
 x = -(locationcount-1)*distance/2 #Build Objects centered
 for i in range(locationcount):
     move = -(width-1)*distance/2
@@ -84,21 +69,43 @@ bpy.ops.rigidbody.object_add(type='PASSIVE')
 
 ####################### Create Balls ########################
 
-ballXLoc = -width/2 + width/ballcount
-for ball in range(ballcount):
-    ballsize = random.randrange(0,maxBallsize*100,1)/100
-    bpy.ops.mesh.primitive_uv_sphere_add(radius=ballsize, enter_editmode=False, align='WORLD', location=(ballXLoc, (locationcount*distance/2)+absYmov, absZmov), scale=(1, 1, 1))
+ballXLoc = -width/2
+count = 1
+for ball in range(ballcount+1):
+#    if count == ballcount/2:
+#        continue
+    ballsize = random.randrange((maxBallsize*100)/2,maxBallsize*100,1)/100
+    bpy.ops.mesh.primitive_uv_sphere_add(radius=ballsize, enter_editmode=False, align='WORLD', location=(ballXLoc, locationcount*distance/2, 0), scale=(1, 1, 1))
+    sphereName, sphereLocation = bpy.context.object.name,bpy.context.object.location
+    #material = bpy.data.materials["Material.016"].node_tree.nodes["Principled BSDF"].inputs[0].default_value = (0.000333462, 0, 0.8, 1)
+    
+    new_mat = bpy.data.materials[-1]  # the new material is the last one in the list
+    new_mat.name = "NAME"
+    new_mat.diffuse.color = (0,0,0) # black
+    sphereName.material = material
+
     bpy.ops.rigidbody.object_add(type='ACTIVE')
+    
+
     ballXLoc += width/ballcount
+    count += 1
+
+
+
+################# ADD Border ################
+
+y = 1
+for i in range(2):
+    if width > locationcount:
+        y = locationcount/width
+    bpy.ops.mesh.primitive_plane_add(size=sizePlane, enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(1, 1, 1))
+    bpy.ops.rigidbody.object_add(type='PASSIVE')
+    bpy.ops.transform.rotate(value=1.5708, orient_axis='Y', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(False, True, False), mirror=True, use_proportional_edit=False, proportional_edit_falloff='SMOOTH', proportional_size=1, use_proportional_connected=False, use_proportional_projected=False, release_confirm=True)
+    bpy.ops.transform.translate(value=(-width*distance/2, 0, -0), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), mirror=True, use_proportional_edit=False, proportional_edit_falloff='SMOOTH', proportional_size=1, use_proportional_connected=False, use_proportional_projected=False, release_confirm=True)
+    bpy.ops.transform.resize(value=(1, y, -1/(10*sizePlane)), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(False, False, True), mirror=True, use_proportional_edit=False, proportional_edit_falloff='SMOOTH', proportional_size=1, use_proportional_connected=False, use_proportional_projected=False, release_confirm=True)
+bpy.ops.transform.translate(value=(2*(width*distance/2), -0, -0), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), mirror=True, use_proportional_edit=False, proportional_edit_falloff='SMOOTH', proportional_size=1, use_proportional_connected=False, use_proportional_projected=False, release_confirm=True)
     
 
 
 bpy.ops.object.select_all(action='SELECT')
-bpy.context.scene.tool_settings.transform_pivot_point = 'CURSOR'
-#bpy.ops.transform.rotate(value=0.448526, orient_axis='X', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), mirror=True, use_proportional_edit=False, proportional_edit_falloff='SMOOTH', proportional_size=1, use_proportional_connected=False, use_proportional_projected=False, release_confirm=True)
-
-
-
-    
-    
-    
+bpy.ops.transform.rotate(value=-0.630805, orient_axis='X', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), mirror=True, use_proportional_edit=False, proportional_edit_falloff='SMOOTH', proportional_size=1, use_proportional_connected=False, use_proportional_projected=False, release_confirm=True)
