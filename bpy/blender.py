@@ -109,3 +109,6 @@ bpy.ops.transform.translate(value=(2*(width*distance/2), -0, -0), orient_type='G
 
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.transform.rotate(value=-0.630805, orient_axis='X', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(True, False, False), mirror=True, use_proportional_edit=False, proportional_edit_falloff='SMOOTH', proportional_size=1, use_proportional_connected=False, use_proportional_projected=False, release_confirm=True)
+
+
+print("Done")
