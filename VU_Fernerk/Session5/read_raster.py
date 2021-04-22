@@ -33,17 +33,17 @@ for f in os.listdir("D:\_Programmieren\VU_Automatisierung_Daten\Daten\s2_ibk_202
             print(obj.driver ,"\t driver")
             print("\n")
 
-            # plt.figure()
-            # plt.title(f)
-            # ax = plt.imshow(array,vmin = 0, vmax = 3000)        #beschreibt subplot aber nicht axis
-            # plt.colorbar()
+            plt.figure()
+            plt.title(f)
+            ax = plt.imshow(array,vmin = 0, vmax = 3000)        #beschreibt subplot aber nicht axis
+            plt.colorbar()
             #plt.savefig("D:\_Programmieren\VU_Automatisierung_Daten\Daten\s2_ibk_2020-09-13\my_img.jpg,",dpi = 200)
-            #plt.show()
+            plt.show()
 
             ####### Histogramm #######
-            plt.figure()
-            plt.hist(array.ravel(),bins=100)
-            plt.show()
+            #plt.figure()
+            #plt.hist(array.ravel(),bins=100)
+            #plt.show()
 
 
 
