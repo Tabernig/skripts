@@ -16,6 +16,7 @@ parser.add_argument('-band1', type=str, help='Band 1')
 parser.add_argument('-band2', type=str, help='Band 2')
 parser.add_argument('-band3', type=str,  help='Band 3')
 parser.add_argument('-outfile', type=str, help='(optional) output file')
+parser.add_argument("-histogram", type=str, help= "(optional) Histogram, y if needed")
 
 #parsing
 args = parser.parse_args()
@@ -26,6 +27,7 @@ print (args.band1)
 print (args.band2)
 print (args.band3)
 print (args.outfile)
+print (args.histogram)
 
 fileList = [args.band1,args.band2,args.band3]
 
@@ -62,12 +64,19 @@ for f_ in fileList:
 
 plt.figure()
 plt.title("Composite")
-ax = plt.imshow(Array3D,vmin = 0, vmax = 355)        #beschreibt subplot aber nicht axis
+ax = plt.imshow(Array3D,vmin = 0, vmax = 255)        #beschreibt subplot aber nicht axis
 #plt.colorbar()
 plt.show()
-##### change array shape in order for rasterio to write it properly
+
+######## change array shape in order for rasterio to write it properly ###############
 Array3D = np.moveaxis(Array3D.squeeze(),-1,0)
 
+###### Histogramm #######
+if args.histogram == "y" or args.histogram == "Y":
+    plt.figure()
+    plt.title("Composite-Histogram")
+    plt.hist(Array3D.ravel(),bins=100)
+    plt.show()
 
 #### Write Raster to chosen path
 if args.outfile:
