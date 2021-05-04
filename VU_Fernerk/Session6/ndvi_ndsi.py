@@ -23,6 +23,7 @@ with rasterio.open(Red,"r") as check:
             #print(check)
             temparray = check.read(1)
             shape = temparray.shape
+            print(shape)
             crsA = check.crs
             trans = check.transform
 
