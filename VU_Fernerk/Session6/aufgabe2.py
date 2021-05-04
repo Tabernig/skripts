@@ -86,29 +86,31 @@ print(labels_1d.shape)
 #split into 
 X_train, X_test,y_train,y_test = train_test_split(bands[labels>=0,:],labels_1d,test_size=0.3,random_state=0, shuffle=True)
 
+nList = [10,20,50]+list(range(100,2001,100))
+print(nList)
+for n in nList:
+    rf = RF(n_estimators=n, n_jobs=-1,oob_score=True)
 
-rf = RF(n_estimators=50, n_jobs=-1,oob_score=True)
+    rf.fit(X_train, y_train)
 
-rf.fit(X_train, y_train)
+    rows, cols, n_bands = bands.shape
 
-rows, cols, n_bands = bands.shape
+    X_pred = bands.reshape((rows*cols,n_bands))
 
-X_pred = bands.reshape((rows*cols,n_bands))
+    y_pred = rf.predict(X_pred)
 
-y_pred = rf.predict(X_pred)
+    y_pred_2d = y_pred.reshape((rows,cols))
 
-y_pred_2d = y_pred.reshape((rows,cols))
-
-with rasterio.open("prediciton-UE1.tif",
-    "w",
-    driver="GTiff",
-    height=y_pred_2d.shape[0],
-    width=y_pred_2d.shape[1],
-    count = 1,
-    dtype = y_pred_2d.dtype,
-    crs = template["crs"],
-    transform = template["transform"]) as fobj:
-    fobj.write(y_pred_2d, 1)
+    with rasterio.open("prediciton-UE2"+str(n)+".tif",
+        "w",
+        driver="GTiff",
+        height=y_pred_2d.shape[0],
+        width=y_pred_2d.shape[1],
+        count = 1,
+        dtype = y_pred_2d.dtype,
+        crs = template["crs"],
+        transform = template["transform"]) as fobj:
+        fobj.write(y_pred_2d, 1)
 
 
 
