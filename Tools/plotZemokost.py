@@ -4,12 +4,12 @@ import math
 import matplotlib
 
 
-xLabel = "Neigung Gerinne"
+xLabel = "Systemzustand"
 
 
 pfad = "D:\_Programmieren\data_for_script\\"
-outName = "neigung_topo"
-filename = pfad+"neigung_topo.txt"
+outName = "systemzust"
+filename = pfad+"systemzust.txt"
 
 
 
@@ -82,13 +82,13 @@ with open(filename) as txtFile:
         count+=1
 
 print(Jahr)
-#für neigungen
-neigung = []
-for value in Jahr:
-    #print(value)
-    newVal = str(round(math.degrees(math.atan(float(value))),2))+"°"
-    neigung.append(newVal)
-    #print(newVal)
+# #für neigungen
+# neigung = []
+# for value in Jahr:
+#     #print(value)
+#     newVal = str(round(math.degrees(math.atan(float(value))),2))+"°"
+#     neigung.append(newVal)
+#     #print(newVal)
 # #print(math.atan(57))
 
 # print(titles)
@@ -105,11 +105,11 @@ gs = fig.add_gridspec(5, hspace=0.5)
 axs = gs.subplots(sharex=True, sharey=False)
 fig.suptitle('Vergleich der Simulationsergebnisse')
 
-axs[0].plot(neigung, QK_MAX, label = "QK_MAX_m³/s")
-axs[1].plot(neigung, tQK_MAX, label = "tQK_MAX_min")
-axs[2].plot(neigung, Kum_Fracht, label = "Kum_Fracht_m³")
-axs[3].plot(neigung, Kum_Regenmenge, label = "Kum_Regen_m³")
-axs[4].plot(neigung, Dauer, label = "Dauer_min")
+axs[0].plot(Jahr, QK_MAX, label = "QK_MAX_m³/s")
+axs[1].plot(Jahr, tQK_MAX, label = "tQK_MAX_min")
+axs[2].plot(Jahr, Kum_Fracht, label = "Kum_Fracht_m³")
+axs[3].plot(Jahr, Kum_Regenmenge, label = "Kum_Regen_m³")
+axs[4].plot(Jahr, Dauer, label = "Dauer_min")
 #matplotlib.rc ("ytick",labelsize=5)
 # Hide x labels and tick labels for all but bottom plot.
 count = 0
